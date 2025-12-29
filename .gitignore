@@ -1,0 +1,10 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# (Opcional) si agregas vendor/ o node_modules/ en el futuro
+/vendor/
+/node_modules/

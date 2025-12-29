@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: wsl_php_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - TZ=America/Santiago
+
+    # TODO (laptop): agregar healthcheck
+    # TODO (laptop): agregar service db (MySQL/MariaDB) si migramos a LAMP completo
