@@ -1,0 +1,117 @@
+APUNTES – WSL + Docker + GitHub (Plantilla base)
+===============================================
+
+Objetivo
+--------
+Este proyecto sirve como plantilla base para trabajar con:
+- WSL (Ubuntu)
+- Docker Desktop
+- Docker Compose
+- PHP (Apache)
+- Git + GitHub usando SSH
+
+La idea es tener un entorno reproducible que funcione igual
+en distintos equipos (desktop / laptop / equipo de trabajo).
+
+
+Estructura del proyecto
+-----------------------
+/docker
+  /php
+    Dockerfile        -> Define la imagen PHP + Apache
+/src
+  index.php          -> Código de la aplicación
+docker-compose.yml   -> Define servicios, puertos y volúmenes
+.gitignore
+apuntes.txt          -> Este archivo
+
+
+Conceptos clave
+---------------
+- Docker Desktop corre en Windows
+- WSL solo actúa como cliente
+- Apache local (WSL) NO es lo mismo que Apache en Docker
+- Docker expone el servicio por el puerto 8080
+
+URLs importantes:
+- http://localhost           -> Apache local (NO usar)
+- http://localhost:8080      -> Apache dentro del contenedor (USAR)
+
+
+Flujo de trabajo inicial (equipo nuevo)
+---------------------------------------
+1. Instalar Docker Desktop (Windows)
+2. Activar integración WSL en Docker Desktop
+3. En WSL:
+   - Agregar usuario al grupo docker:
+     sudo usermod -aG docker $USER
+   - Cerrar y abrir WSL
+4. Verificar:
+   docker version
+
+
+Levantar el proyecto
+--------------------
+Desde la raíz del proyecto:
+
+docker compose up --build
+
+Abrir en navegador:
+http://localhost:8080
+
+Para detener:
+Ctrl + C
+docker compose down
+
+
+Git y GitHub (SSH)
+------------------
+Se usa SSH para evitar problemas de autenticación HTTPS.
+
+Cada equipo debe tener su propia clave SSH.
+
+Pasos por equipo:
+1. Generar clave:
+   ssh-keygen -t ed25519 -C "correo@github"
+2. Agregar clave pública a GitHub:
+   ~/.ssh/id_ed25519.pub
+3. Probar conexión:
+   ssh -T git@github.com
+
+GitHub CLI (`gh`) se usa solo como helper,
+pero Git opera vía SSH.
+
+
+Flujo distribuido (ejemplo desktop / laptop)
+---------------------------------------------
+Equipo A (desktop):
+- Inicializa repo
+- Primer commit
+- Push a GitHub
+
+Equipo B (laptop):
+- Clona repo por SSH
+- docker compose up
+- Hace cambios
+- Commit + push
+
+Este flujo simula trabajo real en equipo.
+
+
+TODO pendientes (intencionales)
+-------------------------------
+- Agregar ruta /health (health.php)
+- Agregar healthcheck en docker-compose.yml
+- Agregar endpoint JSON /api/info.php
+- (Opcional) agregar MySQL y pasar a LAMP completo
+
+
+Notas finales
+-------------
+Esta plantilla se puede usar como base para:
+- APIs PHP
+- Proyectos internos
+- Pruebas de flujo DevOps
+- Portafolio técnico
+
+Estado: funcional y probado en entorno real WSL + Docker.
